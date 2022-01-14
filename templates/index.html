@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Crawl Home{% endblock %}
+{% block head %}
+
+
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+<div class="row mt-4">
+    <h1>Welcome to Crawl</h1>
+    <p id="tagline">Seemlessly plan your next food or bar crawl.</p>
+</div>
+
+
+  <div class="row">
+    <div class="col-9">
+      <img src="/static/img/friends_at_bar.jpg" class="img-fluid">
+    </div>
+    <div class="col-3">
+
+
+      <h3>Log In</h3>
+      <row>
+      <form action="/login" method="POST">
+        <div class="mb-3">
+          <label for="email" class="form-label"> Email </label>
+          <input type="email" class="form-control" name="email">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label"> Password </label>
+          <input type="password" class="form-control" name="password">
+        </div>
+
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary">Log In</button>
+        </div>
+      </form>
+
+      <p> - OR -</p>
+
+      <h3>Create an Account</h3>
+      <form action="/users" method="POST">
+        <div class="mb-3">
+          <label for="email" class="form-label"> Email </label>
+          <input type="email" class="form-control" name="email">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label"> Password </label>
+          <input type="password" class="form-control" name="password">
+        </div>
+
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </div>
+      </form>
+    </row>
+
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
