@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Appointment Search{% endblock %}
+{% block head %}
+
+
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row mt-4">
+        <h1>Melon Reservation Scheduler</h1>
+    </div>
+
+
+    <div class="row mb-3">
+
+        <div class="col-6">
+            <form action="/appointment-search" method="POST">
+
+                <label for="date" class="form-label"> Enter the date of the reservation you would like: </label>
+                <input type="date" class="form-control mb-3" name="date">
+                <label for="start-time">Appointment range start time (optional):</label>
+                <input type="time" id="start-time" class="form-control mb-3" name="start-time">
+                <label for="end-time">Appointment range end time (optional):</label>
+                <input type="time" id="end-time" class="form-control mb-3" name="end-time">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

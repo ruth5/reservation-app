@@ -1,4 +1,5 @@
 """Server for app."""
+from datetime import datetime
 
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify, send_from_directory)
 from model import db, connect_to_db
@@ -32,6 +33,18 @@ def login_user():
         flash(f"There is no account associated with that email.")
     
     return redirect('/')
+
+@app.route('/appointment-search')
+def appointment_search():
+    """Show the appointment search page."""
+
+    return render_template('appointment-search.html')
+
+@app.route('/appointment-search', methods = ['POST'])
+def show_available_reservations():
+    """Show available appointments based on search paramters"""
+
+    return render_template('appointment-search.html')
 
 
 if __name__ == "__main__":
