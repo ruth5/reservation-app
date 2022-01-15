@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Appointment Search{% endblock %}
+{% block head %}
+
+
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row my-4">
+        <h1>Your Scheduled Melon Tasting Appointments</h1>
+    </div>
+
+
+    <div class="row mb-3">
+
+        <div class="col-4 mx-auto">
+            <ul>
+                {% for appointment in appointments %}
+
+                <li>{{appointment}}</li>
+
+                {% endfor %}
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

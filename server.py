@@ -89,11 +89,26 @@ def book_appointment():
     """Books the appointment the user selected using the book appointment button"""
 
     booked_res = request.form.get('booked-res')
-    print(booked_res)
     reservation = crud.create_reservation(session['user_id'], booked_res)
 
     flash(f"Booked this reservation: {reservation}")
     return redirect('/appointment-search')
+
+@app.route('/scheduled-appointments')
+def show_all_user_appointments():
+    """Page that shows all tastings a user has booked."""
+
+    booked_appointments_by_user = crud.get_appointments_by_user(session['user_id'])
+    appointment_times = [reservation.res_start_time for reservation in booked_appointments_by_user]
+    if appointment_times:
+        appointment_times.sort()
+
+    return render_template('scheduled-appointments.html', appointments = appointment_times)
+
+
+
+
+
 
 
 

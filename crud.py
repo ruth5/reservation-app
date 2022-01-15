@@ -47,6 +47,11 @@ def check_if_conflicting_res(start_time, end_time, user_id):
     else:
         return False
 
+def get_appointments_by_user(user_id):
+    """Return all appointments for a given user. Return None if no appointments exist."""
+
+    return Reservation.query.filter_by(user_id=user_id).all()
+
 
 
 
