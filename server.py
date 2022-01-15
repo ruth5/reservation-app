@@ -44,6 +44,13 @@ def appointment_search():
 def show_available_reservations():
     """Show available appointments based on search paramters"""
 
+    date = request.form.get('date')
+    print(date)
+    start_time = request.form.get('start-time')
+    print(start_time)
+    end_time = request.form.get('end-time')
+    print(end_time)
+
     return render_template('appointment-search.html')
 
 
