@@ -1,5 +1,6 @@
 """Server for app."""
 from datetime import datetime
+from appointments import show_potential_appointments
 
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify, send_from_directory)
 from model import db, connect_to_db
@@ -15,6 +16,10 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def show_homepage():
     """View the homepage."""
+
+    if 'user_id' in session:
+        return redirect('/appointment-search')
+
 
     return render_template('index.html')
 
@@ -45,13 +50,51 @@ def show_available_reservations():
     """Show available appointments based on search paramters"""
 
     date = request.form.get('date')
-    print(date)
-    start_time = request.form.get('start-time')
-    print(start_time)
-    end_time = request.form.get('end-time')
-    print(end_time)
 
-    return render_template('appointment-search.html')
+    start_of_day = date + " 00:00"
+    start_of_day = datetime.fromisoformat(start_of_day)
+    end_of_day = date + " 23:59"
+    end_of_day = datetime.fromisoformat(end_of_day)
+
+    if crud.check_if_conflicting_res(start_of_day, end_of_day, session['user_id']):
+        flash("Sorry, you've already booked an appointment on that day. Only one appointment per day allowed.")
+        return redirect('/appointment-search')
+
+    start_time = request.form.get('start-time')
+
+    end_time = request.form.get('end-time')
+
+
+
+    appointment_results = show_potential_appointments(date, start_time, end_time)
+    appointment_results_sorted = sorted(list(appointment_results))
+    potential_conflicts = crud.get_reservations_by_time_range(appointment_results_sorted[0], appointment_results_sorted[-1])
+    potential_conflict_times = {reservation.res_start_time for reservation in potential_conflicts}
+    
+
+    available_appointments= appointment_results - potential_conflict_times
+
+    available_appointments_sorted = sorted(list(available_appointments))
+
+    
+    # need isoformat because can't have space in value for HTML tag
+    appointments_reg_to_iso = {}
+    for appointment in available_appointments_sorted:
+        appointments_reg_to_iso[appointment] = appointment.isoformat()
+
+    return render_template('appointment-results.html', appointments_reg_to_iso = appointments_reg_to_iso)
+
+@app.route('/appointment-results', methods = ['POST'])
+def book_appointment():
+    """Books the appointment the user selected using the book appointment button"""
+
+    booked_res = request.form.get('booked-res')
+    print(booked_res)
+    reservation = crud.create_reservation(session['user_id'], booked_res)
+
+    flash(f"Booked this reservation: {reservation}")
+    return redirect('/appointment-search')
+
 
 
 if __name__ == "__main__":
