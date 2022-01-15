@@ -8,6 +8,14 @@ def show_potential_appointments(date, start_time, end_time):
         start_time = date + " " + '00:00'
     start_time = datetime.fromisoformat(start_time)
 
+
+    if start_time.minute != 30 or start_time.minute != 0:
+        if start_time.minute < 30:
+            start_time += timedelta(minutes = (30 - start_time.minute))
+        else:
+            start_time += timedelta(minutes = (60 - start_time.minute ))
+
+
     if end_time:
         end_time = date + " " + end_time 
     else:

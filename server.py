@@ -38,6 +38,16 @@ def login_user():
     
     return redirect('/')
 
+@app.route('/log-out')
+def clear_session():
+    """Log out the user."""
+
+    if "user_id" in session:
+        session.clear()
+        flash("You have been logged out.")
+
+    return redirect('/')
+
 @app.route('/appointment-search')
 def appointment_search():
     """Show the appointment search page."""
@@ -62,7 +72,6 @@ def show_available_reservations():
     start_time = request.form.get('start-time')
 
     end_time = request.form.get('end-time')
-
 
 
     appointment_results = show_potential_appointments(date, start_time, end_time)
