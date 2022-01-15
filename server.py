@@ -2,11 +2,10 @@
 from datetime import datetime
 from appointments import show_potential_appointments
 
-from flask import (Flask, render_template, request, flash, session, redirect, jsonify, send_from_directory)
+from flask import (Flask, render_template, request, flash, session, redirect)
 from model import db, connect_to_db
 import crud
-# import requests
-# import json
+
 from jinja2 import StrictUndefined
 
 app = Flask(__name__)
@@ -74,7 +73,13 @@ def show_available_reservations():
 
     available_appointments= appointment_results - potential_conflict_times
 
+    if not available_appointments:
+        flash("Sorry, no appointments are available in that time range. Please try again.")
+        return redirect('/appointment-search')
+
+
     available_appointments_sorted = sorted(list(available_appointments))
+
 
     
     # need isoformat because can't have space in value for HTML tag
@@ -91,8 +96,8 @@ def book_appointment():
     booked_res = request.form.get('booked-res')
     reservation = crud.create_reservation(session['user_id'], booked_res)
 
-    flash(f"Booked this reservation: {reservation}")
-    return redirect('/appointment-search')
+    flash(f"Booked this reservation: {reservation.res_start_time}")
+    return redirect('/scheduled-appointments')
 
 @app.route('/scheduled-appointments')
 def show_all_user_appointments():
