@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     """A user."""
 
@@ -13,9 +14,10 @@ class User(db.Model):
                         autoincrement=True,
                         primary_key=True)
     email = db.Column(db.String, nullable=False, unique=True)
-   
+
     def __repr__(self):
-        return f"<User id={self.user_id} email={self.email}>" 
+        return f"<User id={self.user_id} email={self.email}>"
+
 
 class Reservation(db.Model):
     """A reservation."""
@@ -30,6 +32,7 @@ class Reservation(db.Model):
 
 
 my_db_name = "melon_reservations"
+
 
 def connect_to_db(flask_app, db_uri=f"postgresql:///{my_db_name}", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
@@ -46,5 +49,3 @@ if __name__ == "__main__":
     from server import app
 
     connect_to_db(app, echo=False)
-
-

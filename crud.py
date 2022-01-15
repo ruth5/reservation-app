@@ -1,4 +1,4 @@
-""" CRUD operations."""
+"""CRUD operations."""
 
 from model import db, User, Reservation, connect_to_db
 
